@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+// DFA transition function
+int dfa(char str[]) {
+    int currentState = 0;
+    int i = 0;
+
+    while (str[i] != '\0') {
+        switch (currentState) {
+            case 0:
+                if (str[i] == 'a') {
+                    currentState = 1;
+                } else {
+                    currentState = -1;  // Invalid state
+                }
+                break;
+            case 1:
+                if (str[i] == 'a') {
+                    currentState = 1;
+                } else {
+                    currentState = 2;
+                }
+                break;
+            case 2:
+                currentState = -1;  // Invalid state
+                break;
+        }
+
+        i++;
+    }
+
+    return currentState;
+}
+
+int main() {
+    char str[100];
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    int result = dfa(str);
+
+    if (result == 1) {
+        printf("Accepted\n");
+    } else {
+        printf("Rejected\n");
+    }
+
+    return 0;
+}
