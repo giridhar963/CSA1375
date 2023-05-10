@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to check if a given string belongs to the CFG
+bool belongsToCFG(char str[], int start, int end) {
+    // Base case: empty string
+    if (start > end) {
+        return true;
+    }
+
+    // Case: S -> 0S1
+    if (str[start] == '0' && str[end] == '1') {
+        int i = start + 1;
+        while (i < end) {
+            if (belongsToCFG(str, start + 1, i) && belongsToCFG(str, i + 1, end - 1)) {
+                return true;
+            }
+            i++;
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    char str[100];
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    int length = strlen(str);
+    bool result = belongsToCFG(str, 0, length - 1);
+
+    if (result) {
+        printf("String belongs to the CFG.\n");
+    } else {
+        printf("String does not belong to the CFG.\n");
+    }
+
+    return 0;
+}
