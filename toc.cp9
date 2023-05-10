@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+// Function to check if a given string is accepted by the NFA
+int isAccepted(char *str) {
+    // Starting state of the NFA is state 0
+    int currentState = 0;
+    
+    // Loop through each character in the input string
+    for (int i = 0; str[i] != '\0'; i++) {
+        // Transition from state 0 to state 1 on input 'o'
+        if (currentState == 0 && str[i] == 'o')
+            currentState = 1;
+        
+        // Transition from state 1 to state 1 on any input
+        else if (currentState == 1)
+            currentState = 1;
+        
+        // Transition from state 1 to state 2 on input '1'
+        else if (currentState == 1 && str[i] == '1')
+            currentState = 2;
+        
+        // If none of the above transitions occur, reject the string
+        else
+            return 0;
+    }
+    
+    // Accept the string if the final state is state 2
+    return (currentState == 2);
+}
+
+int main() {
+    char str[100];
+    
+    printf("Enter a string: ");
+    scanf("%s", str);
+    
+    if (isAccepted(str))
+        printf("String accepted by the NFA.\n");
+    else
+        printf("String rejected by the NFA.\n");
+    
+    return 0;
+}
