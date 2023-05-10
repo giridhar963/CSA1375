@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define MAX_STATES 10
+
+// Function to check if a given string belongs to the NFA
+bool belongsToNFA(char str[]) {
+    int transitions[MAX_STATES][2] = {
+        {1, -1},  // State 0: Initial state, 'b' transition to State 1
+        {-1, 2},  // State 1: 'a' transition to State 2
+        {-1, -1}  // State 2: Accepting state
+    };
+
+    int currentStates[MAX_STATES];
+    memset(currentStates, 0, sizeof(currentStates));
+    currentStates[0] = 1;  // Start with the initial state
+
+    int length = strlen(str);
+    for (int i = 0; i < length; i++) {
+        int nextState[MAX_STATES];
+        memset(nextState, 0, sizeof(nextState));
+
+        for (int j = 0; j < MAX_STATES; j++) {
+            if (currentStates[j] != -1) {
+                if (str[i] == 'b' && transitions[j][0] != -1) {
+                    nextState[transitions[j][0]] = 1;
+                }
+                if (str[i] == 'a' && transitions[j][1] != -1) {
+                    nextState[transitions[j][1]] = 1;
+                }
+            }
+        }
+
+        memcpy(currentStates, nextState, sizeof(currentStates));
+    }
+
+    return currentStates[2] == 1;  // Check if the final state is reached
+}
+
+int main() {
+    char str[100];
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    bool result = belongsToNFA(str);
+
+    if (result) {
+        printf("String belongs to the language.\n");
+    } else {
+        printf("String does not belong to the language.\n");
+    }
+
+    return 0;
+}
+
